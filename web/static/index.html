@@ -2,17 +2,24 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0e11">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>AUTOBWS · bw乐园抢票助手</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🎟️%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%8E%9F%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="/style.css">
-<script src="/vendor/vue.global.prod.js"></script>
-<script src="/vendor/qrcode.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="/static-vue.js"></script>
+<script src="/static-qrcode.js"></script>
 </head>
 <body>
 <div id="app" @click="unlockAudio">
   <header class="topbar">
-    <div class="brand">AUTOBWS <span>· bw乐园抢票助手</span></div>
+    <div class="brand" translate="no">AUTOBWS <span>· bw乐园抢票助手</span></div>
     <nav>
       <a :class="{on:view==='console'}" @click="go('console')">主控台</a>
       <a :class="{on:view==='monitor'}" @click="go('monitor')" v-if="grabs.length">监控 <b>{{grabs.length}}</b></a>
@@ -39,7 +46,7 @@
     <div class="cards">
       <div class="card" v-for="p in profiles" :key="p.name">
         <div class="card-h">
-          <div class="avatar"><span>{{(p.uname||'?').slice(0,1)}}</span><img v-if="p.face" :src="p.face" referrerpolicy="no-referrer" @error="$event.target.style.display='none'"></div>
+          <div class="avatar"><span>{{(p.uname||'?').slice(0,1)}}</span><img v-if="p.face" :src="p.face" width="38" height="38" alt="" referrerpolicy="no-referrer" @error="$event.target.style.display='none'"></div>
           <div>
             <div class="nm">{{p.name}}</div>
             <div class="sub">{{p.uname}} · {{p.uid}}</div>
@@ -231,13 +238,13 @@
       </div>
       <div class="row"><label class="switch"><input type="checkbox" v-model="settings.tg_enabled"> Telegram</label></div>
       <div v-if="settings.tg_enabled" style="padding-left:12px">
-        <div class="row"><label>Bot Token</label><input v-model="settings.tg_token" placeholder="123456:ABC..."></div>
+        <div class="row"><label>Bot Token</label><input v-model="settings.tg_token" placeholder="123456:ABC…" autocomplete="off"></div>
         <div class="row"><label>Chat ID</label><input v-model="settings.tg_chat"></div>
         <div class="row"><label>代理(可选)</label><input v-model="settings.tg_proxy" placeholder="socks5://127.0.0.1:60808 或留空走系统/直连"></div>
         <div class="row"><button class="sm" @click="testNotify('telegram')">测试发送</button></div>
       </div>
       <div class="row"><label class="switch"><input type="checkbox" v-model="settings.webhook_enabled"> Webhook</label></div>
-      <div v-if="settings.webhook_enabled" style="padding-left:12px"><div class="row"><label>URL</label><input v-model="settings.webhook_url" placeholder="https://..."><button class="sm" @click="testNotify('webhook')">测试</button></div></div>
+      <div v-if="settings.webhook_enabled" style="padding-left:12px"><div class="row"><label>URL</label><input v-model="settings.webhook_url" placeholder="https://…" autocomplete="off"><button class="sm" @click="testNotify('webhook')">测试</button></div></div>
       <div class="row"><label class="switch"><input type="checkbox" v-model="settings.smtp_enabled"> 邮件(SMTP)</label></div>
       <div v-if="settings.smtp_enabled" style="padding-left:12px">
         <div class="row"><label>SMTP 主机:端口</label><input v-model="settings.smtp_host" placeholder="smtp.qq.com"><input v-model.number="settings.smtp_port" placeholder="465" class="narrow"></div>
@@ -249,7 +256,7 @@
   </transition>
 
   <transition name="settle">
-  <div class="settle" v-if="settle" @click="closeSettle()">
+  <div class="settle" v-if="settle" role="dialog" aria-modal="true" aria-label="抢票成功" @click="closeSettle()">
     <div class="cs-wrap">
       <div class="cs-banner">
         <span class="cs-chev l">»</span>
@@ -257,7 +264,7 @@
         <span class="cs-chev r">«</span>
       </div>
       <div class="cs-mvp">
-        <div class="cs-av"><span>{{(settle.account||'?').slice(0,1)}}</span><img v-if="settle.face" :src="settle.face" referrerpolicy="no-referrer" @error="$event.target.style.display='none'"></div>
+        <div class="cs-av"><span>{{(settle.account||'?').slice(0,1)}}</span><img v-if="settle.face" :src="settle.face" width="50" height="50" alt="" referrerpolicy="no-referrer" @error="$event.target.style.display='none'"></div>
         <div class="cs-meta">
           <span class="cs-badge">MVP</span>
           <div class="cs-name">{{settle.account}}</div>
@@ -268,7 +275,7 @@
   </div>
   </transition>
 
-  <transition-group name="toast" tag="div" class="toasts">
+  <transition-group name="toast" tag="div" class="toasts" aria-live="polite" aria-atomic="false">
     <div class="toast" v-for="t in toasts" :key="t.id" :class="t.kind">
       <div class="toast-msg">{{t.msg}}</div>
       <span class="toast-bar" :style="{animationDuration: t.dur+'ms'}"></span>
