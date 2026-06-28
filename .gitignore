@@ -15,6 +15,7 @@ cookie*.json
 # tooling
 .playwright-mcp/
 *.log
+scratchpad/
 
 # external reference (not ours)
 biliTickerBuy-main/

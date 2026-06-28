@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import os
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
@@ -15,12 +14,12 @@ from core.api import BwsClient, ID_TYPES, BIND_MESSAGES
 from core.grabber import collect_sessions, selectable
 from net.http import IMPERSONATE_CHOICES, DEFAULT_IMPERSONATE
 from net.proxy import resolve_pool
-from paths import ROOT
+from paths import STATIC_DIR, MUSIC_DIR
 from web import settings as settings_store
 from web.managers import LoginManager, ProxyChecker, GrabManager, LivenessMonitor
 
-STATIC = Path(__file__).resolve().parent / "static"
-MUSIC = ROOT / "music"
+STATIC = STATIC_DIR
+MUSIC = MUSIC_DIR
 
 login_mgr = LoginManager()
 proxy_chk = ProxyChecker()

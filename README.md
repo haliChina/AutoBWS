@@ -48,5 +48,18 @@ music/         胜利音乐    profiles/ cookie 数据(本地,不入库)
 legacy/        旧 Textual 终端 UI 备份
 ```
 
+## 打包 exe
+
+```bash
+pip install pyinstaller
+pyinstaller --onefile --console --name AUTOBWS \
+  --add-data "web/static;web/static" --add-data "music;music" \
+  --collect-all curl_cffi --collect-all uvicorn --collect-all websockets \
+  --collect-submodules web --collect-submodules core --collect-submodules net \
+  --hidden-import web.app --collect-all qrcode main.py
+```
+
+生成 `dist/AUTOBWS.exe`(单文件)。运行后 `profiles/`、`cookie.json`、`settings.json` 存在 exe 同目录,绿色便携。
+
 ## 声明
 仅供个人学习与研究使用。未经作者书面授权，不得用于任何商业用途、商业服务、代抢服务或其他营利行为。严禁将本项目用于违法行为或违反相关平台规则的用途。由此产生的一切后果均由使用者自行承担，与作者无关。 若您 fork 或使用本项目，请务必遵守相关法律法规与目标平台规则。
